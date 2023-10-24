@@ -17,5 +17,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="mariadb-java-client-3.2.0" level="project" />
+    <orderEntry type="library" name="mybatis-3.5.11" level="project" />
   </component>
 </module>
