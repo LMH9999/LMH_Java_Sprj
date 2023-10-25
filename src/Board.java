@@ -7,6 +7,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+//롬복을 이용한 게시판에서 사용할 getter,setter와 생성자 및 변수들 선언
 public class Board {
     private int bno;
     private String btitle;
@@ -22,6 +23,17 @@ public class Board {
     }
 
     public Board(String btitle, String bcontent, String bwriter) {
+        this.btitle = btitle;
+        this.bcontent = bcontent;
+        this.bwriter = bwriter;
+    }
+
+    public Board(int bno) {
+        this.bno = bno;
+    }
+
+    public Board(int bno, String btitle, String bcontent, String bwriter) {
+        this.bno = bno;
         this.btitle = btitle;
         this.bcontent = bcontent;
         this.bwriter = bwriter;
