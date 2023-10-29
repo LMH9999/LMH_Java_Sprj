@@ -34,14 +34,55 @@
 
 ## 📝기능
 
-### List
+### Create
 
 <details><summary>
    상세보기
 </summary>
   <br>
-  
+
+![image](https://github.com/LMH9999/LMH_Java_Sprj/assets/145963633/7d259269-ee5b-41de-b66c-cd660ba9644a)
+
+```java
+//새로운 게시물을 생성하는 메소드
+    public void createBoard(String title, String content, String writer) {
+        SqlSession session = sqlSessionFactory.openSession();
+        BoardMapper mapper = session.getMapper(BoardMapper.class);
+        Board board = new Board(title, content, writer);
+        mapper.createBoard(board);
+
+        //새로운 게시물 올리기 실행
+        session.commit();
+    }
+```
+
+```xml
+<!-- 새로운 게시물을 추가하는 쿼리문 -->
+    <insert id="createBoard" parameterType="Board">
+        INSERT INTO boards (btitle, bcontent, bwriter, bdate)
+        VALUES (#{btitle}, #{bcontent}, #{bwriter}, now())
+    </insert>
+```
+
+</details>
+
+* 새로운 게시물 추가하기<br><br>
+
+
+### Read
+
+<details><summary>
+   상세보기
+</summary>
+  <br>
+
+사진 1
+
 ![image](https://github.com/LMH9999/LMH_Java_Sprj/assets/145963633/cb12801b-bcbe-480a-8c48-b63732caacf6)
+
+사진 2
+
+![image](https://github.com/LMH9999/LMH_Java_Sprj/assets/145963633/53a365fe-e0e4-4fba-a60f-9471e2076c44)
 
 ```java
 //데이터베이스에서 모든 게시물 목록을 가져오는 메소드
@@ -64,233 +105,204 @@
     </select>
 ```
 
-</details>
+```java
+//원하는 번호의 게시물을 상세보기 하기위한 메소드
+    public Board readBoard(int no){
+        SqlSession session = sqlSessionFactory.openSession();
+        BoardMapper mapper = session.getMapper(BoardMapper.class);
+        Board board = mapper.readBoard(no);
 
-* 게시판 전체글 목록을 보여주기 <br><br>
-
-### 메인
-
-<details><summary>
-   상세보기
-</summary>
-  <br>
-
-![image](https://github.com/LMH9999/LMH_Web_SPrj/assets/145963633/e7ba515a-abfa-4c6d-b971-2cb2eed64eb9)
-
-```css
-/* 버튼이 위아래로 흔들리는 모션 */
-@keyframes upDown{
-  0%{
-    bottom:1rem;
-  }
-  50%{
-    bottom:1.5rem;
-  }
-  100%{
-    bottom:1rem;
-  }
-}
-```
-
-```css
-/* 깜빡이는 애니메이션 */
-@keyframes blink {
-  0%{
-    /* 요소의 불투명도, 0에 가까울수록 투명함 */
-    opacity: 1;
-  }
-  100%{
-    opacity: 0;
-  }
-}
-```
-
-```js
-// 텍스트 작성과 삭제 즉시 실행 함수
-(function(){
-  const spanEl = document.querySelector("main h2 span");
-  // 타이핑 효과로 바뀌는 문구 종류
-  const txtArr = ['Web Publisher', 'Front-End Developer', 'Web UI Designer', 'UX Designer', 'Back-End Developer'];
-  let index = 0;
-  // 한글자씩 쪼개서 저장
-  let currentTxt = txtArr[index].split("");
-  function writeTxt(){
-    // 쪼갠 배열의 한글자씩을 맨 앞의 요소부터 추출하고 삭제
-    spanEl.textContent  += currentTxt.shift(); 
-    // 출력할 글자가 남아있는지 체크
-    if(currentTxt.length !== 0){ 
-      // 랜덤 함수를 이용해 문구가 출력되는 시간을 매번 달라지게 만듬
-      setTimeout(writeTxt, Math.floor(Math.random() * 100));
-    }else{
-      // 모두 출력된 문구를 가져옴
-      currentTxt = spanEl.textContent.split("");
-      // 3초뒤 텍스트 지우는 함수 호출 
-      setTimeout(deleteTxt, 3000);
+        //원하는 게시물 정보를 리턴
+        return board;
     }
-  }
-  // 텍스트 삭제 함수
-  function deleteTxt(){
-    // 이미 출력된 문구가 저장된 currentTxt에서 끝 글자부터 리턴하고 삭제하는 pop()
-    currentTxt.pop();
-    // 맨 끝 글자가 삭제된 나머지 한글자씩 쪼개져있던 문구를 하나로 합침
-    spanEl.textContent = currentTxt.join("");
-    // 문구가 모두 삭제됬는지 체크
-    if(currentTxt.length !== 0){
-      setTimeout(deleteTxt, Math.floor(Math.random() * 100))
-    }else{
-      // 문구가 다 삭제되고 끝났으니 다음 문구 불러오기
-      index = (index + 1) % txtArr.length;
-      currentTxt = txtArr[index].split("");
-      writeTxt();
+```
+
+```xml
+<!-- 특정 번호의 글을 불러와 보여주는 상세보기 쿼리문 -->
+    <select id="readBoard" parameterType="Int" resultType="Board">
+        SELECT bno, btitle, bcontent, bwriter, bdate
+        FROM boards
+        WHERE bno = #{bno}
+    </select>
+```
+
+
+</details>
+
+* 게시판 전체 목록을 보여주기 ( 사진 1 )
+* 원하는 번호의 게시물을 상세보기 ( 사진 2) <br><br>
+
+
+### Update
+
+<details><summary>
+   상세보기
+</summary>
+  <br>
+  
+![image](https://github.com/LMH9999/LMH_Java_Sprj/assets/145963633/fbbb9b33-3890-46b2-a16f-4103a8f86366)
+
+```java
+//원하는 게시물을 수정하는 메소드
+    public void updateBoard(int bno, String title, String content, String writer) {
+        SqlSession session = sqlSessionFactory.openSession();
+        BoardMapper mapper = session.getMapper(BoardMapper.class);
+        Board board = new Board(bno, title,content,writer);
+        mapper.updateBoard(board);
+
+        //게시물 수정 실행
+        session.commit();
     }
-  }
-  writeTxt();
-})();
 ```
+
+```xml
+<!-- 이미 있는 게시물을 수정하기 위한 쿼리문 -->
+    <update id="updateBoard" parameterType="Board">
+        UPDATE boards SET btitle=#{btitle}, bcontent=#{bcontent}, bwriter=#{bwriter}
+        WHERE bno = #{bno}
+    </update>
+```
+
 
 </details>
 
-* 마우스 아이콘이 흔들리는 애니메이션 구현<br>
-* 커서가 깜빡이는 애니메이션 구현<br>
-* 여러 문구가 타이핑되는 애니메이션 구현<br><br>
+* 원하는 번호의 게시물을 수정하는 기능<br><br>
 
 
-### About , Features , Portfolio
+### Delete
 
 <details><summary>
    상세보기
 </summary>
   <br>
 
-사진1
-  
-![image](https://github.com/LMH9999/LMH_Web_SPrj/assets/145963633/b4f0cc0a-1223-45a0-9b60-0f9ea6d5dcb1)
+사진 1
 
-사진2
+![image](https://github.com/LMH9999/LMH_Java_Sprj/assets/145963633/58dbc94b-3198-42bc-8f0e-d39be450c4c6)
 
-![image](https://github.com/LMH9999/LMH_Web_SPrj/assets/145963633/fa50763c-f5dc-48aa-adba-d9d4e8ace39d)
+사진 2
 
-사진3
+![image](https://github.com/LMH9999/LMH_Java_Sprj/assets/145963633/092e3445-5ce5-4529-8bda-09e03602fbae)
 
-![image](https://github.com/LMH9999/LMH_Web_SPrj/assets/145963633/20136b7f-e7a5-465e-bd71-0e6a32d24203)
 
-```css
-/* 내용 부분 사각형에 마우스를 올렸을 때 강조를 위해 그 사각형 배경,글자 색상 변경 */
-section .do-me .do-inner:hover{
-  background-color:lightcoral;
-  color:white;
-}
-/* 내용 부분 사각형에 마우스을 때 아이콘의 폰트 색상도 자연스럽도록 변경 */
-section .do-me .do-inner:hover i{
-  color:white;
-}
+```java
+//원하는 게시물을 삭제하는 메소드
+    public void deleteBoard(int bno) {
+        SqlSession session = sqlSessionFactory.openSession();
+        BoardMapper mapper = session.getMapper(BoardMapper.class);
+        mapper.deleteBoard(bno);
+
+        //게시물 삭제 실행
+        session.commit();
+    }
+```
+
+```xml
+<!-- 특정 게시물을 삭제하기 위한 쿼리문 -->
+    <delete id="deleteBoard" parameterType="int">
+        DELETE FROM boards WHERE bno=#{bno}
+    </delete>
+```
+
+```java
+//게시물 전체를 삭제하는 메소드
+    public void clearBoard(){
+        SqlSession session = sqlSessionFactory.openSession();
+        BoardMapper mapper = session.getMapper(BoardMapper.class);
+        mapper.clearBoard();
+
+        //게시물 전체 삭제 실행
+        session.commit();
+    }
+```
+
+```xml
+<!-- 게시물 전체를 삭제하는 쿼리문 -->
+    <delete id="clearBoard" parameterType="Board">
+        delete from boards
+    </delete>
 ```
 
 </details>
 
-* About : 나를 소개하는 페이지
-* Features : 무슨 역량을 가졌는지 설명하는 페이지
-* Fortpolo : 경험을 설명하는 페이지
-* 특정 내용에 마우스를 올렸을 때 강조를 위해 색상 변경 (사진 2) <br><br>
+* Delete : 원하는 번호의 게시물을 삭제하는 기능 ( 사진 1 )
+* Clear : 모든 게시물을 삭젝하는 기능 ( 사진 2 ) <br><br>
 
-
-### Contact
+### MyBatis
 
 <details><summary>
    상세보기
 </summary>
   <br>
-  
-![image](https://github.com/LMH9999/LMH_Web_SPrj/assets/145963633/1a6d7578-63bc-433b-814f-a9999ae25fa7)
 
-```css
-/* textarea에 커서가 활성화되면 파란색 테두리와 그림자 효과 추가 */
-section.contact .contact-me .right .form-group textarea:focus{
-  outline:none;
-  border:1px solid #719ECE;
-  box-shadow:0 0 10px #719ECE;
-}
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <!-- DB 설정 -->
+                <property name="driver" value="org.mariadb.jdbc.Driver"/>
+                <property name="url" value="jdbc:mariadb://127.0.0.1:3306/board_prj"/>
+                <property name="username" value="root"/>
+                <property name="password" value="12345"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <!-- Mapper 파일의 위치 -->
+        <mapper resource="BoardMapper.xml"/>
+    </mappers>
+
+</configuration>
 ```
 
-
-</details>
-
-* 나에 대한 정보<br>
-* 내게 연락하고 싶은 사람을 위한 양식<br>
-* 양식에 마우스를 클릭해서 커서가 활성화 될 때 강조 표시<br><br>
-
-
-### 반응형 코드
-
-<details><summary>
-   상세보기
-</summary>
-  <br>
-  
-![image](https://github.com/LMH9999/LMH_Web_SPrj/assets/145963633/02921135-0157-4675-9b45-2d64f8a903a0)
-
-![image](https://github.com/LMH9999/LMH_Web_SPrj/assets/145963633/579b26f9-aed9-46ff-a837-1f186a4e9ed4)
-
-
-```css
-@media screen and (max-width: 1140px){
-
-  /* 메인 container 기준 1140 -> 992px */
-  main .container{
-    width: 992px;
-  }
-  
-  /* 섹션 container 기준 1140 -> 600px */
-  section .container{
-    width:600px;
-  }
-
-  /* About me 영역 왼쪽을 너비를 50% -> 100% 변경 */
-  section .about-self .left{
-    width:100%;
-    margin-bottom: 1.5rem;
-  }
-  /* About me 영역 오른쪽 너비를 50% -> 100% 변경 */
-  section  .about-self .right{
-    width:100%;
-    padding:0;
-  }
-
-  /* What I Do 영역의 콘텐츠 박스의 너비를 30% -> 48% 변경 */
-  section .do-me .do-inner{
-    width:48%;
-    margin-bottom: 1.5rem;
-    margin-right: 0;
-  }
-
-  section .do-me .do-inner:nth-child(2n+1){
-    margin-right:4%; /* 1, 3, 5...번째 본문 사각형에 margin-right 4% 적용 */
-  }
-  
-  /* PortFolio 영역의 콘텐츠 박스 너비를 30% ->  48% 변경 */
-  section .portfolio-me .portfolio-inner{
-    width:48%;
-    margin-right: 0;
-  }
-
-  section .portfolio-me .portfolio-inner:nth-child(2n+1){
-    margin-right:4%;
-  }
-
-  /* Contact With Me 영역 */
-  section.contact .contact-me .left{
-    width:100%; /* 너비 변경 30% -> 100% */
-  }
-  
-  section.contact .contact-me .right{
-    width:100%;/* 너비 변경 65% -> 100% */
-    margin-left: 0; /* margin 초기화 */
-    
-  }
-}
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BoardMapper">
+    <!--게시판 전체글 목록을 보여주기 위한 쿼리문 -->
+    <select id="getBoard" resultType="Board">
+        SELECT bno, btitle, bcontent, bwriter, bdate
+        FROM boards
+        ORDER BY bno DESC
+    </select>
+    <!-- 새로운 게시물을 추가하는 쿼리문 -->
+    <insert id="createBoard" parameterType="Board">
+        INSERT INTO boards (btitle, bcontent, bwriter, bdate)
+        VALUES (#{btitle}, #{bcontent}, #{bwriter}, now())
+    </insert>
+    <!-- 특정 번호의 글을 불러와 보여주는 상세보기 쿼리문 -->
+    <select id="readBoard" parameterType="Int" resultType="Board">
+        SELECT bno, btitle, bcontent, bwriter, bdate
+        FROM boards
+        WHERE bno = #{bno}
+    </select>
+    <!-- 이미 있는 게시물을 수정하기 위한 쿼리문 -->
+    <update id="updateBoard" parameterType="Board">
+        UPDATE boards SET btitle=#{btitle}, bcontent=#{bcontent}, bwriter=#{bwriter}
+        WHERE bno = #{bno}
+    </update>
+    <!-- 특정 게시물을 삭제하기 위한 쿼리문 -->
+    <delete id="deleteBoard" parameterType="int">
+        DELETE FROM boards WHERE bno=#{bno}
+    </delete>
+    <!-- 게시물 전체를 삭제하는 쿼리문 -->
+    <delete id="clearBoard" parameterType="Board">
+        delete from boards
+    </delete>
+</mapper>
 ```
 
 </details>
 
-* 웹 브라우저의 창 크기에 따라 바뀌는 사이즈 및 구조 변경
+* 데이터베이스를 쉽게 다룰수 있도록 도와주는 ORM 프레임워크
+* 데이터베이스 쿼리와 프로그래밍 코드를 나누어 수정과 작성이 편하다 <br><br>
 
