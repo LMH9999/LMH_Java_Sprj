@@ -2,7 +2,9 @@
 
 ## 💾프로젝트
 
-**'이것이 자바다'** 책을 통해 배운 것들은 활용해 <u> **자기소개서** </u>를 웹페이지로 구현<br><br><br>
+**'이것이 자바다'** 책을 통해 배운 것들은 활용해 게시판의 CRUD 기능을 구현
+구현 내용을 MyBatis 를 통한 연결로 변경
+<br><br><br>
 
 ### 🕓기간
 
@@ -10,9 +12,8 @@
 
 ### 🛠기술 스택
 
-![java](https://img.shields.io/badge/Java-437291?style=for-the-badge&logo=openjdk&logoColor=white)
-![mariadb](https://img.shields.io/badge/mariadb-003545?style=for-the-badge&logo=mariadb&logoColor=white)<br>
-**MyBatis**<br><br><br>
+![java](https://img.shields.io/badge/Java-437291?style=for-the-badge&logo=openjdk&logoColor=white), 
+![mariadb](https://img.shields.io/badge/mariadb-003545?style=for-the-badge&logo=mariadb&logoColor=white), **MyBatis**<br><br><br>
 
 ### 📔사용 교재
 
@@ -23,50 +24,49 @@
 </summary>
   <br>
 
-![image](https://github.com/LMH9999/LMH_Web_Study/assets/145963633/20001b2b-d663-4cb3-a2f0-4c8178b8d663)
+![image](https://github.com/LMH9999/LMH_Java_Sprj/assets/145963633/1e7ff7fe-a688-4183-bf88-4d864fd81e10)
 
 </details>
 
-- **'코딩 자율학습 HTML + CSS + 자바스크립트'** / 길벗 / 김기수 저
+- **'이것이 자바다'** / 한빛미디어 / 신용권, 임경균 저
 
 <br><br><br>
 
 ## 📝기능
 
-### 헤더
+### List
 
 <details><summary>
    상세보기
 </summary>
   <br>
   
-![image](https://github.com/LMH9999/LMH_Web_SPrj/assets/145963633/e61dfd4b-e63d-4d3c-b545-a3e7df60886a)
+![image](https://github.com/LMH9999/LMH_Java_Sprj/assets/145963633/cb12801b-bcbe-480a-8c48-b63732caacf6)
 
-```html
-<h1>
-  <!-- 어디서 누르던지 홈(메인)으로 가는 버튼 -->
-  <button data-animation-scroll="true" data-target="#main">LMH</button>
-</h1>
+```java
+//데이터베이스에서 모든 게시물 목록을 가져오는 메소드
+    public ArrayList<Board> getBoard() {
+        SqlSession session = sqlSessionFactory.openSession();
+        BoardMapper mapper = session.getMapper(BoardMapper.class);
+        ArrayList<Board> boardList = mapper.getBoard();
+
+        //쿼리문으로 불러온 게시물 목록을 리턴
+        return boardList;
+    }
 ```
 
-
-```css
-header{
-  /* 스크롤을 내려도 고정된 위치에 보이도록 */
-  position:fixed;
-  color:white;
-  top:0;
-  /* 어떤 컨텐츠보다 항상 위에 보이도록 z-index 설정 */
-  z-index:1;
-  width:100%;
-  padding:1rem;
-}
+```xml
+<!--게시판 전체글 목록을 보여주기 위한 쿼리문 -->
+    <select id="getBoard" resultType="Board">
+        SELECT bno, btitle, bcontent, bwriter, bdate
+        FROM boards
+        ORDER BY bno DESC
+    </select>
 ```
+
 </details>
 
-* 항상 홈으로 가는 버튼<br>
-* 원하는 페이지로 이동하는 메뉴<br>
-* 스크롤을 내려도 고정된 위치<br><br>
+* 게시판 전체글 목록을 보여주기 <br><br>
 
 ### 메인
 
