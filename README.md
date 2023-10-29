@@ -34,7 +34,7 @@
 
 ## 📝기능
 
-### Create
+### 1️⃣Create
 
 <details><summary>
    상세보기
@@ -69,7 +69,7 @@
 * 새로운 게시물 추가하기<br><br>
 
 
-### Read
+### 2️⃣Read
 
 <details><summary>
    상세보기
@@ -133,7 +133,7 @@
 * 원하는 번호의 게시물을 상세보기 ( 사진 2) <br><br>
 
 
-### Update
+### 3️⃣Update
 
 <details><summary>
    상세보기
@@ -169,7 +169,7 @@
 * 원하는 번호의 게시물을 수정하는 기능<br><br>
 
 
-### Delete
+### 4️⃣Delete
 
 <details><summary>
    상세보기
@@ -228,7 +228,7 @@
 * Delete : 원하는 번호의 게시물을 삭제하는 기능 ( 사진 1 )
 * Clear : 모든 게시물을 삭젝하는 기능 ( 사진 2 ) <br><br>
 
-### MyBatis
+### 5️⃣MyBatis
 
 <details><summary>
    상세보기
