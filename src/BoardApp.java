@@ -20,10 +20,7 @@ public class BoardApp {
             WebView wv = new WebView();
             //게시물 전체 목록 표시
             wv.printBoard(boardList);
-            System.out.println();
-            System.out.println("-----------------------------------------------------------------------");
-            System.out.println("메인메뉴: 1.Create | 2.Read | 3.Clear | 4.Exit");
-            System.out.print("메뉴선택: ");
+            wv.printMainMenu();
             //사용자의 원하는 메뉴 읽기
             String cmd = scan.nextLine();
             System.out.println();
@@ -41,9 +38,7 @@ public class BoardApp {
                 String content = scan.nextLine();
                 System.out.print("글쓴이: ");
                 String writer = scan.nextLine();
-                System.out.println("-----------------------------------------------------------------------");
-                System.out.println("보조메뉴: 1.Ok | 2.Cancel");
-                System.out.print("메뉴선택: ");
+                wv.printSubMenu();
                 //게시글 만드는걸 확정하는 보조메뉴
                 String menuNo = scan.nextLine();
                 //1을 입력받으면 입력받은 제목, 내용, 글쓴이의 정보로 데이터베이스 새 게시물 생성
@@ -65,10 +60,7 @@ public class BoardApp {
                 Board board = db.readBoard(bno);
                 //웹뷰에 있는 인터페이스 불러와서 원하는 게시물 정보 출력
                 wv.printReadBoard(board);
-                System.out.println();
-                System.out.println("-------------------------------------------------------------------");
-                System.out.println("보조메뉴: 1.Update | 2.Delete | 3.List");
-                System.out.print("메뉴선택: ");
+                wv.printReadSubMenu();
                 String menuNo = scan.nextLine();
                 System.out.println();
 
@@ -82,9 +74,7 @@ public class BoardApp {
                     System.out.print("글쓴이: ");
                     String writer = scan.nextLine();
                     //보조메뉴 출력
-                    System.out.println("-------------------------------------------------------------------");
-                    System.out.println("보조메뉴: 1.Ok | 2.Cancel");
-                    System.out.print("메뉴선택: ");
+                    wv.printSubMenu();
                     String subMenuNo = scan.nextLine();
                     //1을 선택해 확정 지었다면 데이터베이스에서 게시물 수정
                     if (subMenuNo.equals("1")) {
@@ -97,9 +87,7 @@ public class BoardApp {
                     }
                 } else if (menuNo.equals("2")) {
                     //2번 삭제를 선택했다면 방금 읽은 게시물을 삭제하기
-                    System.out.println("-------------------------------------------------------------------");
-                    System.out.println("보조메뉴: 1.Ok | 2.Cancel");
-                    System.out.print("메뉴선택: ");
+                    wv.printSubMenu();
                     String subMenuNo = scan.nextLine();
                     //확정짓는 보조메뉴를 1번 선택했다면 데이터베이스에서 게시물 삭제
                     if (subMenuNo.equals("1")) {
@@ -115,9 +103,7 @@ public class BoardApp {
             } else if (cmd.equals("3")) {
                 //3번을 선택했다면 게시물 전체 삭제
                 System.out.println("[게시물 전체 삭제]");
-                System.out.println("-------------------------------------------------------------------");
-                System.out.println("보조메뉴: 1.Ok | 2.Cancel");
-                System.out.print("메뉴선택: ");
+                wv.printSubMenu();
                 String menuNo = scan.nextLine();
                 //확정짓는 보조메뉴 1번을 선택하면 데이터베이스 전체 게시물 삭제
                 if(menuNo.equals("1")) {

@@ -25,4 +25,29 @@ public class WebView {
         System.out.println("-------------------------------------------------------------------");
         System.out.println("내용 : "+ board.getBcontent());
     }
+
+    //메인메뉴 화면
+    public void printMainMenu(){
+        System.out.println();
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("메인메뉴: 1.Create | 2.Read | 3.Clear | 4.Exit");
+        System.out.print("메뉴선택: ");
+    }
+
+    //선택했을때 한번 되묻는 메뉴
+    public void printSubMenu(){
+        System.out.println();
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("보조메뉴: 1.Ok | 2.Cancel");
+        System.out.print("메뉴선택: ");
+    }
+
+    //특정 게시물을 읽었을때 나오는 메뉴
+    public void printReadSubMenu(){
+        System.out.println();
+        System.out.println("-------------------------------------------------------------------");
+        System.out.println("보조메뉴: 1.Update | 2.Delete | 3.List");
+        System.out.print("메뉴선택: ");
+    }
+
 }
